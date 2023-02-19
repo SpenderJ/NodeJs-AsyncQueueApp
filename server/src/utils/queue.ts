@@ -1,6 +1,6 @@
 import {v4 as uuidv4} from 'uuid';
 
-export class ConfirmationQueue<T> {
+export class ConfirmationQueue {
     private queue: { public_id: string, content: string, createdAt: string }[] = [];
     private confirmationMap: Map<string, NodeJS.Timeout> = new Map();
     private confirmationTimeoutMs: number;
@@ -15,16 +15,15 @@ export class ConfirmationQueue<T> {
         return public_id;
     }
 
-    dequeue(): Promise<object> {
+    dequeue(): Promise<{ public_id: string, content: string, createdAt: string }> {
         const queuedItem = this.queue.shift();
         if (queuedItem) {
-            const { public_id, content, createdAt } = queuedItem;
             const confirmationTimeout = setTimeout(() => {
-                this.confirmationMap.delete(public_id);
+                this.confirmationMap.delete(queuedItem.public_id);
                 this.queue.push(queuedItem);
             }, this.confirmationTimeoutMs);
 
-            this.confirmationMap.set(public_id, confirmationTimeout);
+            this.confirmationMap.set(queuedItem.public_id, confirmationTimeout);
 
             return Promise.resolve(queuedItem);
         } else {
@@ -32,7 +31,7 @@ export class ConfirmationQueue<T> {
         }
     }
 
-    confirm(public_id: string): Promise<boolean> {
+    acknowledge(public_id: string): Promise<boolean> {
         return new Promise(resolve => {
             const confirmationTimeout = this.confirmationMap.get(public_id);
             if (confirmationTimeout) {

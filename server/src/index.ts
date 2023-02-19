@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(router);
 
-export const messageQueue = new ConfirmationQueue<string>(10000);
+export const messageQueue = new ConfirmationQueue(10000);
 
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);

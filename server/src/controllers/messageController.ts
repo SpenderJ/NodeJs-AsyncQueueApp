@@ -23,7 +23,7 @@ function createMessage(req: Request, res: Response) {
 
 function approveMessage(req: Request, res: Response) {
     const { public_id } = req.body;
-    messageQueue.confirm(public_id)
+    messageQueue.acknowledge(public_id)
         .then((approvedMessage) => {
             console.log('Approved message:', approvedMessage);
             res.status(200).send(approvedMessage);
