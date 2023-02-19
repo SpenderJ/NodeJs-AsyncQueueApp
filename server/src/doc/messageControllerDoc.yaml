@@ -1,0 +1,56 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: Message API
+basePath: /api
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+
+paths:
+  /message:
+    get:
+      summary: Get a message
+      description: Retrieves the next message from the message queue
+      responses:
+        200:
+          description: OK
+        500:
+          description: Error retrieving message
+    post:
+      summary: Create a message
+      description: Creates a new message and adds it to the message queue
+      parameters:
+        - in: body
+          name: message
+          description: The message content
+          required: true
+          schema:
+            type: object
+            properties:
+              content:
+                type: string
+      responses:
+        200:
+          description: OK
+    put:
+      summary: Approve a message
+      description: Removes a message from the message queue and marks it as approved
+      parameters:
+        - in: body
+          name: message
+          description: The message ID
+          required: true
+          schema:
+            type: object
+            properties:
+              public_id:
+                type: string
+      responses:
+        200:
+          description: OK
+        500:
+          description: Error approving message
