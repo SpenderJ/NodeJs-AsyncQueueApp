@@ -17,3 +17,13 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
+
+
+### `npm test`
+
+Runs the tests for the queue methods
+
+### Documentation
+
+Once the server is started you can find the documentation at this url:
+[swagger documentation](http://localhost:3001/api-docs/#/)
